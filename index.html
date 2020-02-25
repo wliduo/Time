@@ -40,8 +40,8 @@
             transition: -webkit-transform 300ms;
             transition: transform 300ms;
             transition: transform 300ms, -webkit-transform 300ms;
-            -webkit-transform: translateY(calc(50vh - 20px));
-            transform: translateY(calc(50vh - 20px));
+            -webkit-transform: translateY(calc(30vh - 20px));
+            transform: translateY(calc(30vh - 20px));
         }
 
         .colon:after {
@@ -70,11 +70,28 @@
         .num.distant {
             opacity: 0.1;
         }
+
+        .textA {
+            color: red;
+            font-style: italic;
+        }
+
+        .textB {
+            color: yellow;
+            font-style: italic;
+        }
     </style>
 </head>
 
 <body>
     <div>
+        <div class="textA">不知不觉苟活了</div>
+        <div class="textB"><span id="years"></span>年</div>
+        <div class="textB"><span id="months"></span>月</div>
+        <div class="textB"><span id="days"></span>天</div>
+        <div class="textB"><span id="hours"></span>时</div>
+        <div class="textB"><span id="minutes"></span>分</div>
+        <div class="textB"><span id="seconds"></span>秒</div>
         <div class="column">
             <div class="num">0</div>
             <div class="num">1</div>
@@ -159,19 +176,41 @@
             }) || '';
         }
 
+        var birthday = "1997-05-28";
+        var birthdayTime = new Date(birthday).getTime();
+        function setTime(newTime) {
+            var useTime = newTime - birthdayTime;
+            var seconds = (useTime / 1000).toFixed(2);
+            var minutes = (seconds / 60).toFixed(2);
+            var hours = (minutes / 60).toFixed(2);
+            var days = (hours / 24).toFixed(2);
+            var years = (days / 365).toFixed(2);
+            var months = (years * 12).toFixed(2);
+            document.getElementById('seconds').innerHTML = seconds;
+            document.getElementById('minutes').innerHTML = minutes;
+            document.getElementById('hours').innerHTML = hours;
+            document.getElementById('days').innerHTML = days;
+            document.getElementById('months').innerHTML = months;
+            document.getElementById('years').innerHTML = years;
+        }
+
+        var size = 38;
         var loop = setInterval(function () {
             c = getClock();
 
+            setTime(d.getTime());
+
             columns.forEach(function (ele, i) {
                 var n = + c[i];
-                var size = 38;
                 var offset = -n * size;
-                ele.style.transform = 'translateY(calc(50vh + ' + offset + 'px - ' + size / 2 + 'px))';
+                ele.style.transform = 'translateY(calc(30vh + ' + offset + 'px - ' + size / 2 + 'px))';
                 Array.from(ele.children).forEach(function (ele2, i2) {
                     ele2.className = 'num ' + getClass(n, i2);
                 });
             });
-        }, 200 + Math.E * 10);</script>
+        }, 200 + Math.E * 10);
+
+    </script>
 
 </body>
 
